@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pour ma Princesse Soan</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@1&display=swap');
+
+        * { box-sizing: border-box; }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            font-family: 'Playfair Display', serif;
+            overflow: hidden; background-color: #fff5f6;
+            touch-action: manipulation; /* Évite le zoom accidentel sur mobile */
+        }
+
+        /* --- ÉCRAN 1 : LA DEMANDE --- */
+        #page-demande {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; height: 100vh; width: 100%;
+            background: radial-gradient(circle, #fff5f6 0%, #ffd1dc 100%);
+            transition: opacity 1s ease-in-out;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 { 
+            color: #d63384; 
+            font-size: clamp(1.8rem, 5vw, 3rem); /* Taille adaptative */
+            margin-bottom: 40px; 
+            z-index: 2;
+        }
+
+        .container-boutons { 
+            display: flex; 
+            flex-direction: row; /* Côte à côte par défaut */
+            gap: 20px; 
+            align-items: center; 
+            justify-content: center;
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        #btn-oui {
+            background-color: #e63946; color: white; border: none;
+            padding: 15px 30px; font-size: 1.2rem; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(230, 57, 70, 0.3);
+            animation: battement 1.2s infinite; 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        #btn-non {
+            background-color: #fad2e1; color: #d63384; border: 2px solid #d63384;
+            padding: 15px 30px; font-size: 1.2rem; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s ease;
+            z-index: 5;
+            white-space: nowrap;
+        }
+
+        @keyframes battement {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.08); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- ÉCRAN 2 : LA SURPRISE --- */
+        #page-surprise {
+            display: none; position: relative; height: 100vh; width: 100%;
+            background-color: black; color: white; text-align: center;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+
+        .background-photos { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+        .photo {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 2s ease-in-out;
+        }
+
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); z-index: 2;
+        }
+
+        .message-final { 
+            position: relative; z-index: 3; padding: 20px; width: 90%;
+        }
+
+        .message-final h2 { 
+            font-family: 'Dancing Script', cursive; 
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            color: #ffb3c1; margin-bottom: 10px; 
+        }
+
+        .message-final p { font-size: clamp(1rem, 4vw, 1.5rem); }
+
+        .signature { 
+            font-size: clamp(1.5rem, 5vw, 2.2rem); 
+            margin-top: 30px; font-style: italic; color: #fff; 
+        }
+
+        .heart {
+            position: absolute; color: #e63946; font-size: 25px;
+            z-index: 4; animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+
+        /* Media Query pour petits téléphones */
+        @media (max-width: 400px) {
+            .container-boutons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="musique" src="ma-chanson.mpeg" type="audio/mpeg" preload="auto"></audio>
+
+    <div id="page-demande">
+        <h1>Veux-tu être ma Valentine, Soan ?</h1>
+        <div class="container-boutons">
+            <button id="btn-oui">OUI</button>
+            <button id="btn-non">Non</button>
+        </div>
+    </div>
+
+    <div id="page-surprise">
+        <div class="background-photos" id="diaporama">
+            <div class="photo" style="background-image: url('WhatsApp Image 2026-02-04 at 16.45.09.jpeg');"></div>
+            <div class="photo" style="background-image: url('WhatsApp Image 2026-02-04 at 16.45.10.jpeg');"></div>
+            <div class="photo" style="background-image: url('WhatsApp Image 2026-02-04 at 16.47.59.jpeg');"></div>
+        </div>
+        <div class="overlay"></div>
+        <div class="message-final">
+            <h2>Je t'aime, Soan</h2>
+            <p>Tu es mon plus beau cadeau et tu es officiellement ma VALENTINE</p>
+            <div class="signature">Zavatsoa</div>
+        </div>
+    </div>
+
+    <script>
+        const btnOui = document.getElementById('btn-oui');
+        const btnNon = document.getElementById('btn-non');
+        const pageDemande = document.getElementById('page-demande');
+        const pageSurprise = document.getElementById('page-surprise');
+        const musique = document.getElementById('musique');
+
+        let fontSizeOui = 1.2; 
+        let paddingOuiY = 15; 
+        let paddingOuiX = 30; 
+        let fontSizeNon = 1.2;
+
+        btnNon.addEventListener('click', (e) => {
+            e.preventDefault(); // Empêche des comportements mobiles bizarres
+            
+            // Le OUI grandit
+            fontSizeOui += 0.5; 
+            paddingOuiY += 10;
+            paddingOuiX += 20;
+            
+            btnOui.style.fontSize = fontSizeOui + "rem";
+            btnOui.style.padding = paddingOuiY + "px " + paddingOuiX + "px";
+
+            // Le NON rétrécit
+            fontSizeNon -= 0.15;
+            btnNon.style.fontSize = fontSizeNon + "rem";
+            btnNon.style.padding = (fontSizeNon * 10) + "px " + (fontSizeNon * 20) + "px";
+
+            if (fontSizeNon <= 0.5) {
+                btnNon.style.opacity = '0';
+                setTimeout(() => btnNon.style.visibility = 'hidden', 300);
+            }
+        });
+
+        btnOui.addEventListener('click', () => {
+            // Lecture immédiate pour le navigateur mobile
+            musique.play().catch(err => console.log("Audio play failed", err));
+            
+            pageDemande.style.opacity = '0';
+            
+            setTimeout(() => {
+                pageDemande.style.display = 'none';
+                pageSurprise.style.display = 'flex';
+                lancerDiaporama();
+                setInterval(createHeart, 400);
+            }, 1000);
+        });
+
+        function lancerDiaporama() {
+            const photos = document.querySelectorAll('.photo');
+            let index = 0;
+            if(photos.length > 0) {
+                photos[0].style.opacity = '1';
+                setInterval(() => {
+                    photos[index].style.opacity = '0';
+                    index = (index + 1) % photos.length;
+                    photos[index].style.opacity = '1';
+                }, 4000);
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-20px';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            pageSurprise.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
